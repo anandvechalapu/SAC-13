@@ -1,51 +1,58 @@
 
 
-package com.sacaral.service;
-
-import com.sacaral.dto.UserDto;
-
-public interface ResetPasswordService {
-
-    // Ability to go to the Sacaral.ai login page.
-    public void goToLoginPage();
-
-    // Ability to click on the “Forgot Password” link.
-    public void clickOnForgotPasswordLink();
-
-    // Ability input their registered email address to get a password reset link through email.
-    public void enterRegisteredEmailId(String emailId);
-
-    // Ability to click on the link which is sent to the email.
-    public void clickOnLinkSentToMail();
-
-    // Ability to enter the following details:
-    // Old password
-    // New password
-    // Confirm password
-    public void enterPasswordDetails(String oldPassword, String newPassword, String confirmPassword);
-
-    // Ability to click on submit.
-    public void clickOnSubmit();
-
-    // Ability to login into the website using new password.
-    public UserDto loginWithNewPassword();
-
-    // Verify to make sure the user has access to a registered email address before allowing them to reset their password.
-    public boolean verifyUserHasRegisteredEmail(String emailId);
-
-    // Verify to make sure to get the verification link.
-    public boolean verifyVerificationLink(String emailId);
-
-    // Verify to make sure the user clicked the right link to change their password.
-    public boolean verifyUserClickedRightLink();
-
-    // Verify to make sure that the user has created a new password that satisfies with the security criteria (for example, it should be strong and unique).
-    public boolean verifyNewPasswordSatisfiesCriteria(String newPassword);
-
-    // Verify to see the user is responsible for safeguarding their new password and for any actions taken using their accounts.
-    public boolean verifyUserResponsibleForNewPassword();
-
-    // Verify to make sure the user is not permitted to use the previous password.
-    public boolean verifyUserNotPermittedToUsePreviousPassword();
+@Service
+public class ResetPasswordService {
+    
+    public boolean resetPassword(String emailAddress, String oldPassword, String newPassword, String confirmPassword) {
+        //Validate the user has access to a registered email address
+        if (!isValidEmailAddress(emailAddress)) {
+            return false;
+        }
+        
+        //Validate that the user clicked the right link to change their password
+        if (!isValidResetLink(emailAddress)) {
+            return false;
+        }
+        
+        //Validate that the user has created a new password that satisfies with the security criteria
+        if (!isValidPassword(newPassword)) {
+            return false;
+        }
+        
+        //Validate to make sure the user is not permitted to use the previous password
+        if (oldPassword.equals(newPassword)) {
+            return false;
+        }
+        
+        //Validate to make sure the user has entered the same password in confirm password field
+        if (!confirmPassword.equals(newPassword)) {
+            return false;
+        }
+        
+        //Send a confirmation message to the user's email address once the password has been changed successfully
+        sendPasswordConfirmationMessage(emailAddress);
+        
+        return true;
+    }
+    
+    //Method to validate if the email address entered is valid
+    private boolean isValidEmailAddress(String emailAddress) {
+        //validation logic
+    }
+    
+    //Method to validate if the reset link sent is valid
+    private boolean isValidResetLink(String resetLink) {
+        //validation logic
+    }
+    
+    //Method to validate the new password
+    private boolean isValidPassword(String password) {
+        //validation logic
+    }
+    
+    //Method to send a confirmation message to the user's email address once the password has been changed successfully
+    private void sendPasswordConfirmationMessage(String emailAddress) {
+        //send confirmation message logic
+    }
 
 }
